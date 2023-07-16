@@ -24,7 +24,7 @@ router.post('/users', async (req, res) => {
     try {
         await user.save()
 
-        await sendEmail(user.email, 'Welcome to task manager!!',`Hello ${user.name}, Welcome to task manager app!!`)
+        sendEmail(user.email, 'Welcome to task manager!!',`Hello ${user.name}, Welcome to task manager app!!`)
 
         const token = await user.generateAuthToken();
         res.status(200).send({user, token})
@@ -117,7 +117,7 @@ router.delete("/user/me", auth, async (req, res) => {
     try {
         await user.deleteOne()
     
-        await sendEmail(user.email, "Goodbye!!", "Please comback soon!! Hope you had great experince with us!!")
+        sendEmail(user.email, "Goodbye!!", "Please comback soon!! Hope you had great experince with us!!")
 
         if (user) {
             return res.status(200).send(user)
