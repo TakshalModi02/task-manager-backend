@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const userRouter = require('./routers/user');
 const taskRouter = require('./routers/task');
-const sendMail = require("./email/email_config");
 
 const app = express()
 const port = process.env.PORT
@@ -22,6 +21,3 @@ mongoose.connect(process.env.mongod_url)
 .catch((err)=>{
     console.log("Can not connect to data base")
 });
-
-
-console.log(sendMail)

@@ -3,8 +3,28 @@ const multer = require("multer")
 const sharp = require("sharp")
 const User = require('../model/user')
 const auth = require('../middleware/auth')
-const sendEmail = require('../email/email_config')
+// const sendEmail = require('../email/email_config')
 const router = new express.Router()
+const nodemailer = require("nodemailer")
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+          secure: true,
+  
+    auth: {
+      user: "takshalm@gmail.com",
+      pass: process.env.password,
+    },
+    tls: {
+      rejectUnauthorized: false
+    },
+    // increase the timeout value
+    timeout: 60000
+  });
+
+
 
 const upload = multer({
     limits:{
@@ -24,7 +44,20 @@ router.post('/users', async (req, res) => {
     try {
         await user.save()
 
-        sendEmail(user.email, 'Welcome to task manager!!',`Hello ${user.name}, Welcome to task manager app!!`)
+        const mailOptions = {
+            from: "moviesop99@gmail.com",
+            to: user.email,
+            subject: "Welcome!!",
+            text: "Welcome to systum brother!!"
+        };
+        await transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+              console.log("Error hai bhai systum mai!!")
+              console.error(error)
+            } else {
+              console.log("Email sent: " + info.response)
+            }
+        }); 
 
         const token = await user.generateAuthToken();
         res.status(200).send({user, token})
@@ -118,7 +151,22 @@ router.delete("/user/me", auth, async (req, res) => {
         await user.deleteOne()
     
         if (user) {
-            sendEmail(user.email, "Goodbye!!", "Please comback soon!! Hope you had great experince with us!!")
+            // sendEmail(user.email, "Goodbye!!", "Please comback soon!! Hope you had great experince with us!!")
+            const mailOptions = {
+                from: "moviesop99@gmail.com",
+                to: user.email,
+                subject: "Goodbye!!",
+                text: "Please comback soon!! Hope you had great experince with us!!"
+            };
+            await transporter.sendMail(mailOptions, function(error, info) {
+                if (error) {
+                  console.log("Error hai bhai systum mai!!")
+                  console.error(error)
+                } else {
+                  console.log("Email sent: " + info.response)
+                }
+            }); 
+
             return res.status(200).send(user)
         }
         res.status(404).send(user)
