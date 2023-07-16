@@ -26,9 +26,10 @@ const sendEmail = (email, subject, message)=> {
     };
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
-          console.error(error);
+          console.log("Error hai bhai systum mai!!")
+          console.error(error)
         } else {
-          console.log("Email sent: " + info.response);
+          console.log("Email sent: " + info.response)
         }
     });    
 }

@@ -117,9 +117,8 @@ router.delete("/user/me", auth, async (req, res) => {
     try {
         await user.deleteOne()
     
-        sendEmail(user.email, "Goodbye!!", "Please comback soon!! Hope you had great experince with us!!")
-
         if (user) {
+            sendEmail(user.email, "Goodbye!!", "Please comback soon!! Hope you had great experince with us!!")
             return res.status(200).send(user)
         }
         res.status(404).send(user)
