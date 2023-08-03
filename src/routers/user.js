@@ -33,7 +33,7 @@ router.post('/users', async (req, res) => {
     }
 })
 
-router.get('/user/login', async (req, res) => {
+router.post('/user/login', async (req, res) => {
     if (!req.body.email) {
         return res.status(400).send("Please enter email!!")
     }
